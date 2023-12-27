@@ -6,6 +6,7 @@ import { HighLight } from '@components/HighLight'
 import { GroupCard } from '@components/GroupCard'
 import { Container } from './styles'
 import { ListEmpty } from '@components/ListEmpty'
+import { Button } from '@components/Button'
 
 export function Groups() {
 
@@ -30,6 +31,8 @@ export function Groups() {
         }
         ListEmptyComponent={<ListEmpty message='Que tal cadastrar a primeira turma?' />}
       />
+
+      <Button title='Criar nova turma' />
 
     </Container>
   )
