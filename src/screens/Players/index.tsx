@@ -97,7 +97,7 @@ export function Players() {
   async function handleGroupRemove() {
     Alert.alert(
       'Remover',
-      `Deseja remover o grupo: ${group} ?`,
+      `Deseja remover a turma: ${group} ?`,
       [
         { text: 'Não', style: 'cancel' },
         { text: 'Sim', onPress: () => groupRemove() },
