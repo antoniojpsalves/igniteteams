@@ -1,6 +1,6 @@
 import { useState } from 'react'
-
-import { Container, Form } from './styles'
+import { FlatList } from 'react-native'
+import { Container, Form, HeaderList, NumberOfPlayers } from './styles'
 import { Header } from '@components/Header'
 import { HighLight } from '@components/HighLight'
 import { ButtonIcon } from '@components/ButtonIcon'
@@ -10,6 +10,8 @@ import { Filter } from '@components/Filter'
 
 
 export function Players() {
+
+  const [team, setTeam] = useState('Time A')
   const [players, setPlayers] = useState<string[]>([])
 
 
@@ -24,8 +26,17 @@ export function Players() {
         />
         <ButtonIcon icon='add' />
       </Form>
-      <Filter title='Time A' />
-      <Filter title='Time B' isActive />
+
+      <HeaderList>
+        <FlatList
+          data={['Time A', 'Time B', 'Time C']}
+          keyExtractor={item => item}
+          renderItem={({ item }) => <Filter title={item} isActive={team === item} onPress={() => setTeam(item)} />}
+          horizontal
+        />
+        <NumberOfPlayers>{players.length}</NumberOfPlayers>
+      </HeaderList>
+
     </Container>
   )
 }
