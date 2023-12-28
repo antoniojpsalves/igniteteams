@@ -9,12 +9,13 @@ import { Filter } from '@components/Filter'
 import { PlayerCard } from '@components/PlayerCard'
 import { ListEmpty } from '@components/ListEmpty'
 import { Button } from '@components/Button'
-import { useRoute } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import { AppError } from '@utils/AppError'
 import { playerAddByGroup } from '@storage/player/playerAddByGroup'
 import { playersGetByGroupAndTeam } from '@storage/player/playersGetByGroupAndTeam'
 import { PlayerStorageDTO } from '@storage/player/PlayerStorageDTO'
 import { playerRemoveByGroup } from '@storage/player/playerRemoveByGroup'
+import { removeGroupByName } from '@storage/group/removeGroupByName'
 
 type RouteParams = {
   group: string
@@ -28,6 +29,8 @@ export function Players() {
 
   const route = useRoute()
   const { group } = route.params as RouteParams
+
+  const navigation = useNavigation()
 
   const newPlayerNameInputRef = useRef<TextInput>(null)
 
@@ -76,6 +79,26 @@ export function Players() {
     fetchPlayersByTeam()
   }
 
+  async function groupRemove() {
+    try {
+      await removeGroupByName(group)
+      navigation.navigate('groups')
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  async function handleGroupRemove() {
+    Alert.alert(
+      'Remover',
+      `Deseja remover o grupo: ${group} ?`,
+      [
+        { text: 'Não', style: 'cancel' },
+        { text: 'Sim', onPress: () => groupRemove() },
+      ]
+    )
+  }
+
   useEffect(() => {
     fetchPlayersByTeam()
   }, [team])
@@ -122,7 +145,7 @@ export function Players() {
         ]}
       />
 
-      <Button title='Remover turma' type='SECONDARY' />
+      <Button title='Remover turma' type='SECONDARY' onPress={handleGroupRemove} />
 
     </Container>
   )
