@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Alert, FlatList } from 'react-native'
+import { useEffect, useState, useRef } from 'react'
+import { Alert, FlatList, TextInput } from 'react-native'
 import { Container, Form, HeaderList, NumberOfPlayers } from './styles'
 import { Header } from '@components/Header'
 import { HighLight } from '@components/HighLight'
@@ -12,6 +12,8 @@ import { Button } from '@components/Button'
 import { useRoute } from '@react-navigation/native'
 import { AppError } from '@utils/AppError'
 import { playerAddByGroup } from '@storage/player/playerAddByGroup'
+import { playersGetByGroupAndTeam } from '@storage/player/playersGetByGroupAndTeam'
+import { PlayerStorageDTO } from '@storage/player/PlayerStorageDTO'
 
 type RouteParams = {
   group: string
@@ -20,12 +22,13 @@ type RouteParams = {
 export function Players() {
 
   const [team, setTeam] = useState('Time A')
-  const [players, setPlayers] = useState<string[]>([])
+  const [players, setPlayers] = useState<PlayerStorageDTO[]>([])
   const [newPlayerName, setNewPlayerName] = useState('')
 
   const route = useRoute()
   const { group } = route.params as RouteParams
 
+  const newPlayerNameInputRef = useRef<TextInput>(null)
 
   async function handleAddPlayers() {
     if (newPlayerName.trim().length === 0) {
@@ -48,8 +51,24 @@ export function Players() {
       }
     }
 
+    newPlayerNameInputRef.current?.blur()
     setNewPlayerName('')
+    fetchPlayersByTeam(team)
   }
+
+  async function fetchPlayersByTeam(team: string) {
+    try {
+      const playersByTeam = await playersGetByGroupAndTeam(group, team)
+      setPlayers(playersByTeam)
+    } catch (err) {
+      console.error(err)
+      Alert.alert('Pessoas', 'Não foi possível carregar as pessoas.')
+    }
+  }
+
+  useEffect(() => {
+    fetchPlayersByTeam(team)
+  }, [team])
 
 
   return (
@@ -58,6 +77,7 @@ export function Players() {
       <HighLight title={group} subTitle='Adicione a galera e separe os times' />
       <Form>
         <Input
+          inputRef={newPlayerNameInputRef}
           placeholder='Nome da pessoa'
           autoCorrect={false}
           onChangeText={setNewPlayerName}
@@ -78,8 +98,8 @@ export function Players() {
 
       <FlatList
         data={players}
-        keyExtractor={player => player}
-        renderItem={({ item }) => <PlayerCard name={item} onRemove={() => { }} />}
+        keyExtractor={player => player.name}
+        renderItem={({ item }) => <PlayerCard name={item.name} onRemove={() => { }} />}
         ListEmptyComponent={() => (
           <ListEmpty message='Não há pessoas nesse time.' />
         )}
