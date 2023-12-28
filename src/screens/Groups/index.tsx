@@ -53,10 +53,12 @@ export function Groups() {
             onPress={() => handleOpenGroup(item)}
           />
         )}
-        contentContainerStyle={
+        contentContainerStyle={[
+          { paddingBottom: 100 },
           groups.length === 0 && { flex: 1 }
-        }
+        ]}
         ListEmptyComponent={<ListEmpty message='Que tal cadastrar a primeira turma?' />}
+        showsVerticalScrollIndicator={false}
       />
 
       <Button
