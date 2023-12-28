@@ -8,6 +8,7 @@ import { Input } from '@components/Input'
 import { Filter } from '@components/Filter'
 import { PlayerCard } from '@components/PlayerCard'
 import { ListEmpty } from '@components/ListEmpty'
+import { Button } from '@components/Button'
 
 
 
@@ -52,6 +53,8 @@ export function Players() {
           players.length === 0 && { flex: 1 }
         ]}
       />
+
+      <Button title='Remover turma' type='SECONDARY' />
 
     </Container>
   )
