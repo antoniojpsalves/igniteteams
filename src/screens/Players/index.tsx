@@ -18,7 +18,7 @@ type RouteParams = {
 export function Players() {
 
   const [team, setTeam] = useState('Time A')
-  const [players, setPlayers] = useState<string[]>(['Antonio', 'Victor'])
+  const [players, setPlayers] = useState<string[]>([])
 
   const route = useRoute()
   const { group } = route.params as RouteParams
@@ -38,7 +38,7 @@ export function Players() {
 
       <HeaderList>
         <FlatList
-          data={['Time A', 'Time B', 'Time C']}
+          data={['Time A', 'Time B']}
           keyExtractor={item => item}
           renderItem={({ item }) => <Filter title={item} isActive={team === item} onPress={() => setTeam(item)} />}
           horizontal

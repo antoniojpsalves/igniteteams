@@ -6,7 +6,7 @@ import { Input } from '@components/Input'
 import { useNavigation } from '@react-navigation/native'
 import { useState } from 'react'
 import { groupCreate } from '@storage/group/groupCreate'
-import { AppError } from '@utils/AppErrors'
+import { AppError } from '@utils/AppError'
 import { Alert } from 'react-native'
 
 
