@@ -6,13 +6,15 @@ import { HighLight } from '@components/HighLight'
 import { ButtonIcon } from '@components/ButtonIcon'
 import { Input } from '@components/Input'
 import { Filter } from '@components/Filter'
+import { PlayerCard } from '@components/PlayerCard'
+import { ListEmpty } from '@components/ListEmpty'
 
 
 
 export function Players() {
 
   const [team, setTeam] = useState('Time A')
-  const [players, setPlayers] = useState<string[]>([])
+  const [players, setPlayers] = useState<string[]>(['Antonio', 'Victor'])
 
 
   return (
@@ -36,6 +38,15 @@ export function Players() {
         />
         <NumberOfPlayers>{players.length}</NumberOfPlayers>
       </HeaderList>
+
+      <FlatList
+        data={players}
+        keyExtractor={player => player}
+        renderItem={({ item }) => <PlayerCard name={item} onRemove={() => { }} />}
+        ListEmptyComponent={() => (
+          <ListEmpty message='Não há pessoas nesse time.' />
+        )}
+      />
 
     </Container>
   )
