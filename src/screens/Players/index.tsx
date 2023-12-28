@@ -46,6 +46,11 @@ export function Players() {
         ListEmptyComponent={() => (
           <ListEmpty message='Não há pessoas nesse time.' />
         )}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={[
+          { paddingBottom: 100 },
+          players.length === 0 && { flex: 1 }
+        ]}
       />
 
     </Container>
