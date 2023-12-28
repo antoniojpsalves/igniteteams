@@ -16,11 +16,11 @@ export async function playerAddByGroup(newPlayer: PlayerStorageDTO, group: strin
     const playerAlreadyAdded = storedPlayers.filter(player => player.name === newPlayer.name)
 
     if (playerAlreadyAdded.length > 0) {
-      throw new AppError('Jogador já adicionado nesse time')
+      throw new AppError('Jogador já adicionado em um time por aqui.')
     }
 
     await AsyncStorage.setItem(`${PLAYER_COLLECTION}-${group}`, JSON.stringify([...storedPlayers, newPlayer]))
   } catch (err) {
-    console.error(err)
+    throw (err)
   }
 }
